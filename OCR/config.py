@@ -8,7 +8,7 @@ IMGSIZE = (608,608)## yolo3 输入图像尺寸
 #keras_anchors = '8,11, 8,16, 8,23, 8,33, 8,48, 8,97, 8,139, 8,198, 8,283'
 keras_anchors = '8,36, 8,55, 8,68, 8,85, 8,110, 8,134, 8,151, 8,183, 8,195'
 class_names = ['none','text',]
-kerasTextModel=os.path.join(pwd,"t_model","textModel.h5")##keras版本模型权重文件
+kerasTextModel=os.path.join(pwd,"models","textModel.h5")##keras版本模型权重文件
 
 ############## darknet yolo  ##############
 darknetRoot = os.path.join(os.path.curdir,"darknet")## yolo 安装目录
