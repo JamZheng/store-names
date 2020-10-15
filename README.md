@@ -64,7 +64,7 @@ python2 .\category.py ./wiki.zh.text.model ./txtresult/OCR3result.txt ./out/name
 
 结果将保存在./out/name.csv
 
-注：如果要在windows下Excel查看，则要加上UTF-8 boom 头，则带--csv参数，如果其他方式查看，打开就不需要用到此参数。
+注：如果要在windows下Excel查看，则要加上UTF-8 BOM 头，则带--csv参数，如果其他方式查看，打开就不需要用到此参数。
 
 
 
