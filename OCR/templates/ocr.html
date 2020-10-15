@@ -1,4 +1,27 @@
 $def with(post)
+<head>
+<title>识厦</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- mobile metas -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+<!-- site metas -->
+<title>识厦</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content="">
+<!-- bootstrap css -->
+<link rel="stylesheet" href="static/css/bootstrap.min.css">
+<!-- style css -->
+<link rel="stylesheet" href="static/css/style.css">
+<!-- Responsive-->
+<link rel="stylesheet" href="static/css/responsive.css">
+<!-- Scrollbar Custom CSS -->
+<link rel="stylesheet" href="static/css/jquery.mCustomScrollbar.min.css">
+<!-- Tweaks for older IEs-->
+<link rel="stylesheet" href="static/css/font-awesome.css">
+<link rel="stylesheet" href="static/css/jquery.fancybox.min.css" media="screen">
 <script type="text/javascript" src="static/js/jquery.js"></script>   
 <script type="text/javascript" src="static/js/jquery.form.js"></script> 
 <script type="text/javascript" src="static/js/helps.js"></script> 
@@ -29,6 +52,24 @@ table.gridtable td {
 }
 .loading{display: none; position: absolute; top: 50%; left: 50%; z-index:1002; }
 .class_div{ display:inline} 
+.btnchoose {
+display: inline-block;
+padding: .3em .5em;
+background-image: linear-gradient(#ddd, #bbb);
+border: 1px solid rgba(0,0,0,.2);
+border-radius: .3em;
+box-shadow: 0 1px white inset;
+text-align: center;
+text-shadow: 0 1px 1px black;
+color:white;
+font-weight: bold;
+}
+
+.btnchoose:active {
+    box-shadow: .05em .1em .2em rgba(0,0,0,.6) inset;
+border-color: rgba(0,0,0,.3);
+background: #bbb;
+}
 </style>
 
 
@@ -47,82 +88,370 @@ imgJson = {"imgString":"",
     
 imgBoxes = [];
 imgRate=1;
- </script>   
-
-
-<div style="">
-      <div>
-        
-        <span class="margin-r" style="font-size:100%">文字方向检测</span>
-            <label class="el-switch el-switch-sm">
-            <input type="checkbox" name="switch" id="textAngle">
-            <span class="el-switch-style"></span>
-        </label>
-        
-        <span class="margin-r" style="font-size:110%">单行文字识别</span>
-            <label class="el-switch el-switch-sm"> 
-            <input type="checkbox" name="switch" id="textLine">
-        <span class="el-switch-style"></span>
-        </label>               
-    </div>   
-   <br>
-   <div >
-       
-       $for i,bill in enumerate(post['billList']):
-            <div style="font-size:10px" class="class_div" onclick="getBill('$bill',this,$i)">
-            <span class="margin-r" style="font-size:110%">$bill</span>
-            <label class="el-switch el-switch-sm">
-            <input type="checkbox" name="switch" id="billModel_$i">
-            <span class="el-switch-style"></span>
-            </label>
-            </div>
-       
-   </div>
-    <br>
-      <div class="image-input-container" style="osition: absolute; left: 50%; top: 20%; ">
-                                    <input type="file"   id='imageButton'  accept="image/png, image/bmp, image/jpg, image/jpeg" class="image-local-input" onchange="FunimgPreview('imageButton','Preview','myCanvas')">
-                                    
-      </div> 
-     
- </div>
-
-<br>
-
-                        
-<div class="canvas-container" >
-                                <img id='Preview' width="1600" height="1000"  src="" style="position: absolute; left: 35%; top: 55%; transform: translate(-50%, -50%) scale(0.5);z-index:2;"></img>
-                                <canvas id="myCanvas" width="1600" height="1000" style="position: absolute; left: 35%; top: 55%; transform: translate(-50%, -50%) scale(0.5);z-index:3;">
-     
-
-</div>
-<img id='loadingGif' width="800" height="500"  src="static/img/loading.gif" style="position: absolute; left: 50%; top: 55%; transform: translate(-50%, -50%) scale(0.5);z-index:3;display:none"></img>
-
-
-
-
-
-
-
-    
- <!#############################识别结果######################################################### ---->   
-                <div style="position: absolute; left: 68%; top: 12%;" >
-                    <div class="json">
-                        <div class="json-request-title" id="billmodelname">$post.get('name')</div>
-                            <div style="height:500px;width:300px; overflow:scroll;">
-                                <div id="billNameList"></div>
-                                <div id="mytable"></div>
-                                
+</script>   
+</head>
+<body class="main-layout">
+    <header>
+        <!-- header inner -->
+        <div class="header">
+            <div class="container">
+              <div class="row">
+                    <div class="col-md-12 col-sm-3 col logo_section">
+                        <div class="full">
+                            <div class="center-desk">
+                                <div class="logo">
+                                    <a href="#myCarousel"><img src="static/img/logo.png" alt="#" /></a>
+                                </div>
                             </div>
-                        
+                        </div>
+                    </div>
+                    <div class="col-md-10 offset-md-1">
+                        <nav class="navigation navbar navbar-expand-md navbar-dark ">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarsExample04">
+                            <ul class="navbar-nav mr-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#myCarousel">主页</a>
+                                </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#service"> </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#service">识别模块</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#service"></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#gallery">标识展示</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#gallery"></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="https://github.com/JamZheng/store-names">联系我们</a>
+                            </li>
+                          </ul>
+                       </div>
+                    </nav>
+                 </div>
+              </div>
+           </div>
+        </div>
+    </header>
+     <!-- end header inner -->
+     <!-- end header -->
+     <!-- banner -->
+     <section class="banner_main">
+        <div id="myCarousel" class="carousel slide banner" data-ride="carousel">
+           <ol class="carousel-indicators">
+              <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+              <li data-target="#myCarousel" data-slide-to="1"></li>
+              <li data-target="#myCarousel" data-slide-to="2"></li>
+           </ol>
+           <div class="carousel-inner">
+              <div class="carousel-item active">
+                 <div class="container">
+                    <div class="carousel-caption relative">
+                       <div class="row">
+                          <div class="col-md-7 offset-md-5">
+                             <div class="text-bg">
+                                <h1> 街景 <br>名称识别</h1>
+                                <span>Every detailed texts we can get from the pictures</span>
+                                <a class="read_more" href="#gallery">了解更多</a>
+                             </div>
+                          </div>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+           </div>
+           <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+           <i class="fa fa-angle-left" aria-hidden="true"></i>
+           <span class="sr-only">Previous</span>
+           </a>
+           <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+           <i class="fa fa-angle-right" aria-hidden="true"></i>
+           <span class="sr-only">Next</span>
+           </a>
+        </div>
+     </section>
+     <!-- end banner -->
+     
+     <!--  service -->
+     <div id="service" class="service">
+        <div class="container">
+           <div class="row">
+              <div class="col-md-12">
+                 <div class="titlepage">
+                    <h2>识别 <span class="green">模块</span></h2>
+                 </div>
+              </div>
+           </div>
+           <div class="row">
+              <div class="col-md-10 offset-md-1">
+                 <div class="row">
+                    <div class="col-md-4 col-sm-6">
+                       <div class="service_box">
+                          <i><img src="static/img/service1.png" alt="#"/></i>
+                          <h3>数据准备</h3>
+                          <p>zhwiki-latest-pages-articles<br>ShopSign_1265</p>
+                       </div>
+                    </div>
+                    <div class="col-md-4 offset-md-1 col-sm-6">
+                       <div class="service_box">
+                          <i><img src="static/img/service2.png" alt="#"/></i>
+                          <h3>模型训练</h3>
+                          <p>textModel.h5<br>wiki.zh.text.model</p>
+                       </div>
+                    </div>
+                    <div class="col-md-4 offset-md-3 col-sm-6 mar_top">
+                       <div class="service_box">
+                          <i><img src="static/img/service3.png" alt="#"/></i>
+                          <h3>调参测试</h3>
+                          <p>learning rate,epochs...<br>rate of names</p>
+                       </div>
+                    </div>
+                    <div class="col-md-4 offset-md-1 col-sm-6 mar_top">
+                       <div class="service_box">
+                          <i><img src="static/img/service4.png" alt="#"/></i>
+                          <h3>项目完成</h3>
+                          <p>github project<br>store-names</p>
+                       </div>
+                    </div>
+                    <div class="col-md-12">
+                       <a class="read_more" href="https://github.com/JamZheng/store-names">更多</a>
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </div>
+     </div>
+     <!-- end service -->
+     <!-- gallery -->
+     <div id="gallery"  class="gallery">
+        <div class="container">
+           <div class="row">
+              <div class="col-md-12">
+                 <div class="titlepage">
+                    <h2>标识 <span class="green">展示</span></h2>
+                    <p>Here are many Street signs everywhere, and we can identify them well</p>
+                 </div>
+              </div>
+           </div>
+           <div class="row">
+              <div class="col-md-4 col-sm-6">
+                 <div class="gallery_text">
+                    <div class="galleryh3">
+                       <h3>文字检测</h3>
+                       <p>从图片中定位文本所在的边框<br>
+                          便于后面的识别率提示
+                       </p>
+                    </div>
+                 </div>
+              </div>
+              <div class="col-md-4 col-sm-6">
+                 <div class="gallery_img">
+                    <figure><img src="static/img/1.png" alt="#"/></figure>
+                 </div>
+              </div>
+              <div class="col-md-4 col-sm-6">
+                 <div class="gallery_img">
+                    <figure><img src="static/img/2.png" alt="#"/></figure>
+                 </div>
+              </div>
+              <div class="col-md-4 col-sm-6">
+                 <div class="gallery_img">
+                    <figure><img src="static/img/3.png" alt="#"/></figure>
+                 </div>
+              </div>
+              <div class="col-md-4 col-sm-6">
+                 <div class="gallery_img">
+                    <figure><img src="static/img/4.png" alt="#"/></figure>
+                 </div>
+              </div>
+              <div class="col-md-4 col-sm-6">
+                 <div class="gallery_text">
+                    <div class="galleryh3">
+                       <h3>文字识别</h3>
+                       <p>边框截取图片<br>利用模型识别出文
+                       </p>
+                    </div>
+                 </div>
+              </div>
+              <div class="col-md-4 col-sm-6">
+                 <div class="gallery_text">
+                    <div class="galleryh3">
+                       <h3>商铺名提取</h3>
+                       <p>采用NLP评分模型<br>对识别出的文字分类<br>提取出商铺名
+                       </p>
+                    </div>
+                 </div>
+              </div>
+              <div class="col-md-4 col-sm-6">
+                 <div class="gallery_img">
+                    <figure><img src="static/img/5.png" alt="#"/></figure>
+                 </div>
+              </div>
+              <div class="col-md-4 col-sm-6">
+                 <div class="gallery_img">
+                    <figure><img src="static/img/6.png" alt="#"/></figure>
+                 </div>
+              </div>
+           </div>
+        </div>
+     </div>
+<div>
+
+<div class="design">
+    <div class="container-fluid">
+        <div class="row d_flex">
+            <div class="col-md-5">
+                <div id="design" class="carousel slide banner_design" data-ride="carousel">
+                
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="container">
+                            <div class="carousel-caption relative">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="text_de">
+                                        <div class="titlepage" style="margin-left: 0%;">
+                                            <h2>功能 <span class="green">展示</span></h2>
+                                        </div>
+                                        <div >
+                                            <div>
+                                                <span class="margin-r" style="font-size:100%;color: black;">文字方向检测</span>
+                                                <label class="el-switch el-switch-sm">
+                                                    <input type="checkbox" name="switch" id="textAngle">
+                                                    <span class="el-switch-style"></span>
+                                                </label>
+                                              
+                                                <span class="margin-r" style="font-size:110%;color:black;">单行文字识别</span>
+                                                <label class="el-switch el-switch-sm"> 
+                                                    <input type="checkbox" name="switch" id="textLine">
+                                                    <span class="el-switch-style"></span>
+                                                </label>               
+                                            </div>   
+                                            <br>
+                                            <div> 
+                                                $for i,bill in enumerate(post['billList']):
+                                                <div style="font-size:10px" class="class_div" onclick="getBill('$bill',this,$i)">
+                                                    <!-- <span class="margin-r" style="font-size:110%;color: black;">$bill</span> -->
+                                                    <!-- <label class="el-switch el-switch-sm"> -->
+                                                        <!-- <input type="checkbox" name="switch" id="billModel_$i"> -->
+                                                        <!-- <span class="el-switch-style"></span> -->
+                                                    <!-- </label> -->
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="image-input-container" >
+                                                <input type="file"   id='imageButton'  accept="image/png, image/bmp, image/jpg, image/jpeg" class="image-local-input btnchoose" onchange="FunimgPreview('imageButton','Preview','myCanvas')">                              
+                                            </div> 
+                                            <br>
+                                            <p>网页版暂无支持显卡加速</p>
+                                            <br>
+                                            <!-- <p>上述选择功能开发中...</p> -->
+                                            <br><br><br><br><br><br><br><br><br><br><br>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-             </div>       
-<!##############################识别结果######################################################### ---->
-                    
+                </div>
+            </div>
+            <div class="canvas-container" >
+                        <img id='Preview' width="800" height="500"  src ="static/img/uploadpre.png" style="position: absolute; margin-left: 135%; margin-top: 35%; transform: translate(-50%, -50%) scale(0.7);z-index:3;"></img>
+                        <canvas id="myCanvas" width="800" height="500" style="position: absolute; margin-left: 135%;   margin-top: 35%;transform: translate(-50%, -50%) scale(0.38);z-index:3;">
+                    </div>
+                    <img id='loadingGif' width="500" height="500"  src="static/img/loading.gif" style="position: absolute; margin-left: 135%; margin-top: 35%; transform: translate(-50%, -50%) scale(0.1);z-index:3;display:none"></img>
+            
+             <!--#############################识别结果######################################################### ---->   
+             <div style="position: absolute;  margin-left: 180%;margin-top: 13%;" >
+                 <div class="json">
+                     <div class="json-request-title" id="billmodelname">$post.get('name')</div>
+                         <div style="height:300px;width:350px; overflow:scroll;">
+                             <div id="billNameList"></div>
+                             <div id="mytable"></div>
+                         </div>
+                 </div>
+             </div>     
+       <!--##############################识别结果######################################################### ---->
+      
+        </div>
+    </div>
+</div>
+    
+        
+             
 
-
-
-
+  
+  
+  
+  
+  
+  
+  
+  
+      
+ 
+<footer>
+    <div class="footer">
+       <div class="container">
+          <div class="row">
+             <div class=" col-md-3 col-sm-6">
+                <ul class="social_icon">
+                   <li><a href="https://github.com/JamZheng/store-names"><i class="fa fa-github" aria-hidden="true"></i></a></li>
+                   <li><a href="https://twitter.com/dawnbre45175641"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                   <li><a href="https://outlook.live.com/mail/0/"><i class="fa fa-mail-reply" aria-hidden="true"></i></a></li>
+                   <li><a href="https://telegram.org/centurioncrawler"><i class="fa fa-telegram" aria-hidden="true"></i></a></li>
+                </ul>
+                <p class="variat pad_roght2">
+                   如果您对我们的项目感兴趣，请点击上面链接联系我们
+                </p>
+             </div>
+             
+             <div class="col-md-3 col-sm-6">
+                <h3>信息</h3>
+                <ul class="link_menu">
+                   <li><a href="#myCarousel">主页</a></li>
+                   <li><a href="#service">识别模块</a></li>
+                   <li><a href="#gallery">标识展示</a></li>
+                   <li><a href="https://github.com/JamZheng/store-names">联系我们</a></li>
+                   <li><a href="https://github.com/JamZheng/store-names">开源代码</a></li>
+                </ul>
+             </div>
+             <div class="col-md-3 col-sm-6">
+                <h3>街景识别</h3>
+                <p class="variat">
+                   ·项目将功能分为：文本标识、文本识别和店名提取三个端到端模块在同一环境下能快速识别。<br>·模型轻量化、离线版采用显卡加速<br>·正确率达到90%以上。
+                </p>
+             </div>
+          </div>
+       </div>
+       <div class="copyright">
+          <div class="container">
+             <div class="row">
+                <div class="col-md-10 offset-md-1">
+                   <p>Copyright &copy; 2020.Xiamen University Shixia team All rights reserved.</p>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+ </footer>
+ <!-- end footer -->
+ <!-- Javascript files-->
+ <script src="static/js/jquery.min.js"></script>
+ <script src="static/js/bootstrap.bundle.min.js"></script>
+ <script src="static/js/jquery-3.0.0.min.js"></script>
+ <!-- sidebar -->
+ <script src="static/js/jquery.mCustomScrollbar.concat.min.js"></script>
+ <script src="static/js/custom.js"></script>
 <script type="text/javascript">
             //点击文件,自动提交文件，进行识别
             jQuery('#imageButton').on('change', function()  
@@ -144,7 +473,7 @@ imgRate=1;
         imgJson.billModel = value;
     } 
     
-setInterval(cycle,700); //动画显示box   
+//setInterval(cycle,700); //动画显示box   
     
 </script> 
-
+</body>
